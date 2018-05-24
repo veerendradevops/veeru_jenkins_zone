@@ -1,0 +1,12 @@
+node {
+  stage('SCM') {
+    git 'https://github.com/spring-petclinic/spring-petclinic-angularjs.git'
+  }
+  stage('SonarQube analysis') {
+    withSonarQubeEnv('sonar') {
+      sh 'mvn package sonar:sonar'
+    } // SonarQube taskId is automatically attached to the pipeline context
+  }
+}
+
+note: in fifth line, sonar is the name whaterver u  have given  in the sonarscanner in configuressystem in globaltoolmanagement
