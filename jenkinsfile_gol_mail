@@ -1,0 +1,22 @@
+node {
+   stage('git')
+   {
+       git 'https://github.com/wakaleo/game-of-life.git'
+   }
+   stage('bulid')
+   {
+       sh '/opt/maven/bin/mvn clean package'
+   }
+   stage('archive')
+   {
+       archive 'gameoflife-web/target/*.war'
+   }
+   stage('junit')
+   {
+       junit 'gameoflife-web/target/surefire-reports/*.xml'
+   }
+   stage('mail')
+   {
+       mail bcc: '', body: 'failure', cc: '', from: '', replyTo: '', subject: 'jenknins file report', to: 'veerendratholetidevops@gmail.com'
+}
+}
