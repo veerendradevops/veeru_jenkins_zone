@@ -1,5 +1,16 @@
-stage('docker image')
+node
+{
+    stage('git scm')
+    {
+        git 'https://github.com/wakaleo/game-of-life.git'
+    }
+    stage('maven build')
+    {
+        sh '/opt/maven/bin/mvn clean package'
+    }
+    stage('docker image')
     {
         def image_name= "veerendradevops/gameoflife:${BUILD_NUMBER}"
         sh "docker build -t $image_name ./gameoflife-web/. && docker push $image_name"
     }
+}
