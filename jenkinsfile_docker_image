@@ -1,0 +1,5 @@
+stage('docker image')
+    {
+        def image_name= "veerendradevops/gameoflife:${BUILD_NUMBER}"
+        sh "docker build -t $image_name ./gameoflife-web/. && docker push $image_name"
+    }
