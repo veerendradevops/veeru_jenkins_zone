@@ -1,0 +1,36 @@
+pipeline{
+    agent any
+    
+    parameters {
+       choice(name: 'server', choices: 'tomcat1\ntomcat2', description: 'Select Environment')
+       
+    }
+    stages {
+    stage('git') {
+        steps {
+                  git 'https://github.com/veerendradevops/game-of-life.git'
+                 }
+    
+    }
+    stage('build'){
+        steps{
+            sh '/opt/maven/bin/mvn clean package'
+        }
+    }
+    stage('deploy') {
+         steps {
+                script {
+                    if ( params.server == 'tomcat1') {
+                        sh 'sudo chmod +x ./scripts/tomcat1.sh'
+                        sh './scripts/tomcat1.sh'
+                    } else if ( params.server == 'tomcat2') {
+                        sh 'sudo chmod +x ./scripts/tomcat2.sh'
+                        sh './scripts/tomcat2.sh'
+                    }
+                }
+            }
+        
+    }   
+    }
+ }
+ 
